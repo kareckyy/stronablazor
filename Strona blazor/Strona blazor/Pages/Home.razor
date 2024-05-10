@@ -1,0 +1,46 @@
+﻿@page "/"
+@using System.Timers
+@implements IDisposable
+
+
+<PageTitle>Home</PageTitle>
+
+
+<h1 style="color:aquamarine">Wybrane Środowiska Programowania</h1>
+<h3 style="color:blue;">Witam na mojej stronie internetowej</h3>
+<h2>Karol Jagodziński 119204</h2>
+
+<img src="images/obrazek.png" alt="reka w gore" />
+
+<h1>@currentTime</h1>
+
+@code {
+    private string currentTime = DateTime.Now.ToString("HH:mm:ss tt");
+
+    private Timer? secondsTimer;
+
+    protected override void OnInitialized()
+    {
+       
+        secondsTimer = new Timer(1000);
+        secondsTimer.Enabled = true;
+        secondsTimer.AutoReset = true;
+        secondsTimer.Elapsed += (sender, e) => UpdateTime();
+    }
+
+    private void UpdateTime()
+    {
+        currentTime = DateTime.Now.ToString("HH:mm:ss tt");
+        InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose()
+    {
+        secondsTimer?.Dispose();
+    }
+}
+
+
